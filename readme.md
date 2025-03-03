@@ -1,125 +1,143 @@
-Legal Document Management Interface
-Project Overview
-Develop a responsive Legal Document Management Interface using ReactJS that allows users
-to upload, view, and manage legal documents (PDFs). The application should dynamically
-adjust its layout based on screen size and provide intuitive modals for uploading and viewing
-documents with mock data extractions. Optionally, implement a NodeJS backend to handle file
-uploads and return mock extraction data.
-Technical Stack
-● Frontend:
-○ ReactJS
-○ CSS Flexbox for responsive design
-○ React Modal or similar library for modals
-○ PDF.js or react-pdf for PDF previews
-● Backend (Optional):
-○ NodeJS with Express
-UI/UX Design
-General Layout
-● Page 1: Document Dashboard
-○ Header: Icon in the top-left corner.
-○ Content Area: Nine boxes labeled "Legal Document 1" through "Legal
-Document 9".
-○ Responsive Design: Use Flexbox to ensure dynamic positioning based on
-screen size.
-○ Display of upload date and file name upon successful upload of a document.
-● Page 2: Upload Modal
-○ Popup modal triggered by clicking on a document box.
-○ File upload interface accepting only PDF files.
-● Page 3: Document Details Modal
-○ Split-screen modal:
-■ Left: PDF preview.
-■ Right: Mock extractions with page numbers and "Go To Page" buttons.
-○ Header displaying the name of the selected document.
-○ Close (X) button at the top-right corner.
-Functional Specifications
-Page 1: Document Dashboard
-● Icon:
-○ Place an icon in the top-left corner (e.g., a folder or document icon).
-● Document Boxes:
-○ Create nine boxes labeled from "Legal Document 1" to "Legal Document 9".
-○ Each box should be a flex item, adjusting based on screen size.
-○ On Click:
-■ If no document uploaded: Open Upload Modal (Page 2).
-■ If document exists: Open Document Details Modal (Page 3).
-● Displaying Uploaded Information:
-○ After a successful upload, each box should display:
-■ File Name
-■ Upload Date
-Page 2: Upload Modal
-● Trigger: Clicking on a document box without an uploaded file.
-● Features:
-○ File input accepting only PDF files.
-○ Submit button to upload the file.
-○ Validation to ensure only PDFs are uploaded.
-○ Upon successful upload:
-■ Capture and store the file name.
-■ Capture and store the upload date.
-■ Display the above information on the respective document box.
-■ Close the modal.
-● Error Handling:
-○ Display error messages for invalid file types or upload failures.
-Page 3: Document Details Modal
-● Trigger: Clicking on a document box with an uploaded file.
-● Layout:
-○ Header: Title displaying the selected document's name and an X button to close
-the modal.
-○ Left Panel: PDF preview of the uploaded document.
-○ Right Panel:
-■ List of mock extractions (e.g., Extraction 1, Extraction 2).
-■ Each extraction displays the page number it appears on.
-■ "Go To Page" button next to each extraction to navigate to the respective
-page in the PDF preview.
-● Features:
-○ PDF preview should be scrollable and support page navigation.
-○ "Go To Page" buttons should smoothly scroll the PDF preview to the specified
-page.
-● Mock Extractions:
-○ Generate random page numbers for each extraction using a randomizer.
-○ Example:
-■ Extraction 1 - Page 3
-■ Extraction 2 - Page 7
-Backend Specifications (Optional)
-Note: This section is optional and intended for those who wish to extend the project with a
-backend component.
-● Server Setup:
-○ Use NodeJS with Express framework.
-○ Implement CORS to allow frontend communication.
-● Endpoints:
-○ POST /upload: Handle PDF file uploads.
-■ Accept only PDF files.
-■ Store files temporarily (no persistent storage required).
-○ GET /extractions/:documentId: Return mock extraction data for a given
-document.
-■ Generate and return a list of extractions with random page numbers.
-● Data Handling:
-○ No need for a database; use in-memory storage or local storage on the frontend.
-● Integration:
-○ Frontend should send uploaded files to the backend.
-○ Fetch mock extraction data from the backend to display in the Document Details
-Modal.
-Additional Notes
-● Responsive Design:
-○ Utilize CSS Flexbox to ensure that the document boxes rearrange gracefully on
-different screen sizes.
-○ Test the application on various devices to ensure usability.
-● State Management:
-○ Use React's useState and useEffect hooks for managing component states
-and side effects.
-○ Consider using Context API or Redux if the state becomes complex.
-● File Handling:
-○ Since there's no persistent storage, uploaded files and their metadata will only
-persist during the session.
-○ Utilize Local Storage to retain data across page reloads if necessary.
-● PDF Handling:
-○ Use libraries like react-pdf for rendering PDF previews within the application.
-○ Ensure that the "Go To Page" functionality interacts correctly with the PDF viewer
-to navigate to the specified page.
-● Error Handling & Validation:
-○ Implement robust error handling for file uploads and API interactions.
-○ Provide user-friendly error messages and feedback.
-● Code Quality:
-○ Maintain clean and readable code with proper commenting.
-○ Follow best practices for React and NodeJS development.
-● Testing:
-○ Perform manual testing to ensure all functionalities work as expected.
-○ Optionally, write unit tests for critical components and functionalities.
+Project Setup and Environment Configuration
+----------------------------------------
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (v4.4 or higher)
+- npm (v6 or higher)
+
+### Backend Setup (legal-docs-backend)
+1. Navigate to backend directory:
+```bash
+cd legal-docs-backend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create `.env` file in root directory with following variables:
+```env
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/legal-docs
+UPLOAD_DIR=uploads
+JWT_SECRET=SOMESECRET
+```
+
+4. Create uploads directory:
+```bash
+mkdir uploads
+```
+
+5. Start the server:
+```bash
+# Development mode
+npm run dev
+
+# Production mode
+npm start
+```
+
+The backend server will be running on http://localhost:5000
+
+### Frontend Setup (legal-docs-frontend)
+1. Navigate to frontend directory:
+```bash
+cd legal-docs-frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create `.env` file in root directory:
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+4. Start the development server:
+```bash
+npm start
+```
+
+The frontend application will be running on http://localhost:3000
+
+### Project Structure
+```
+pdf-extraction/
+├── legal-docs-backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── types/
+│   ├── uploads/
+│   └── .env
+└── legal-docs-frontend/
+    ├── public/
+    ├── src/
+    │   ├── components/
+    │   └── types/
+    └── .env
+```
+
+### Available Scripts
+
+Backend:
+- `npm start` - Start production server
+- `npm run dev` - Start development server with hot-reload
+- `npm run build` - Build for production
+
+Frontend:
+- `npm start` - Start development server
+- `npm run build` - Build for production
+- `npm test` - Run tests
+- `npm run eject` - Eject from Create React App
+
+### Development Notes
+- Backend uses TypeScript for type safety
+- Frontend is built with Create React App and TypeScript
+- PDF extraction is handled by pdf-parse library
+- File uploads are stored in the `uploads` directory
+- MongoDB is used for storing document metadata and extractions
+
+### Testing
+#### Backend Tests
+1. Create `.env.test` file in backend directory:
+```env
+PORT=5001
+MONGODB_URI=mongodb://localhost:27017/legal-docs-test
+UPLOAD_DIR=uploads-test
+```
+
+2. Run tests:
+```bash
+cd legal-docs-backend
+npm test
+```
+
+The test suite includes:
+- Document upload and validation
+- Document retrieval (single and list)
+- PDF file serving
+- Error handling scenarios
+
+Test files are located in `src/tests/` directory:
+```
+legal-docs-backend/
+└── src/
+    └── tests/
+        ├── document.test.ts
+        ├── setup.ts
+        └── fixtures/
+            └── test.pdf
+```
+
+
+Note: Ensure MongoDB is running locally before executing backend tests.
+```
+
+
